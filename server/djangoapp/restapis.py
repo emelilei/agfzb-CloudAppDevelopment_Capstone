@@ -93,9 +93,6 @@ def get_dealer_by_id_from_cf(url, id):
                                 st=dealer_doc["st"], zip=dealer_doc["zip"])
     return dealer_obj
 
-
-
-
 # Create a get_dealer_reviews_from_cf method to get reviews by dealer id from a cloud function
 # def get_dealer_by_id_from_cf(url, dealerId):
 # - Call get_request() with specified arguments
@@ -109,7 +106,7 @@ def get_dealer_reviews_from_cf(url, **kwargs):
         json_result = get_request(url)
     # print(json_result)
     if json_result:
-        reviews = json_result["body"]["data"]["docs"]
+        reviews = json_result["result"]["data"]["docs"]
         for dealer_review in reviews:
             review_obj = DealerReview(dealership=dealer_review["dealership"],
                                    name=dealer_review["name"],
@@ -131,7 +128,7 @@ def get_dealer_reviews_from_cf(url, **kwargs):
             review_obj.sentiment = sentiment
             results.append(review_obj)
 
-    return results
+    return render(request, 'djangoapp/dealer_details.html', context)
 
 
 
