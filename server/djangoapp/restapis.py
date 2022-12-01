@@ -15,6 +15,7 @@ def get_request(url, **kwargs):
     # If argument contain API KEY
     api_key = kwargs.get("api_key")
     print(api_key)
+    print(url)
     print("GET from {} ".format(url))
     try:
         if api_key:
