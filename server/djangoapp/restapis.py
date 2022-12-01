@@ -14,6 +14,7 @@ def get_request(url, **kwargs):
     
     # If argument contain API KEY
     api_key = kwargs.get("api_key")
+    print(api_key)
     print("GET from {} ".format(url))
     try:
         if api_key:
@@ -24,6 +25,7 @@ def get_request(url, **kwargs):
             params["return_analyzed_text"] = kwargs["return_analyzed_text"]
             response = requests.get(url, params=params, headers={'Content-Type': 'application/json'},
                                     auth=HTTPBasicAuth('apikey', api_key))
+            print("hi")
         else:
             # Call get method of requests library with URL and parameters
             response = requests.get(url, headers={'Content-Type': 'application/json'},
@@ -98,15 +100,16 @@ def get_dealer_by_id_from_cf(url, id):
 # - Call get_request() with specified arguments
 # - Parse JSON results into a DealerView object list
 def get_dealer_reviews_from_cf(url, **kwargs):
-    results = []
+    results = {}
     id = kwargs.get("id")
     if id:
         json_result = get_request(url, id=id)
+        print(json_result)
     else:
         json_result = get_request(url)
     # print(json_result)
     if json_result:
-        reviews = json_result["result"]["data"]["docs"]
+        reviews = json_result["data"]["docs"]
         for dealer_review in reviews:
             review_obj = DealerReview(dealership=dealer_review["dealership"],
                                    name=dealer_review["name"],
@@ -127,8 +130,9 @@ def get_dealer_reviews_from_cf(url, **kwargs):
             print(sentiment)
             review_obj.sentiment = sentiment
             results.append(review_obj)
-
-    return render(request, 'djangoapp/dealer_details.html', context)
+            
+    #print(results)
+    return results
 
 
 
