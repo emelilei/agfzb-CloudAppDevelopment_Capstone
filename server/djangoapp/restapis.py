@@ -11,7 +11,7 @@ import time
 # e.g., response = requests.get(url, params=params, headers={'Content-Type': 'application/json'},
 #                                     auth=HTTPBasicAuth('apikey', api_key))
 def get_request(url, **kwargs):
-    
+    print(kwargs)
     # If argument contain API KEY
     api_key = kwargs.get("api_key")
     print(api_key)
@@ -100,7 +100,7 @@ def get_dealer_by_id_from_cf(url, id):
 # - Call get_request() with specified arguments
 # - Parse JSON results into a DealerView object list
 def get_dealer_reviews_from_cf(url, **kwargs):
-    results = {}
+    results = []
     id = kwargs.get("id")
     if id:
         json_result = get_request(url, id=id)
@@ -114,13 +114,19 @@ def get_dealer_reviews_from_cf(url, **kwargs):
             review_obj = DealerReview(dealership=dealer_review["dealership"],
                                    name=dealer_review["name"],
                                    purchase=dealer_review["purchase"],
-                                   review=dealer_review["review"])
+                                   review=dealer_review["review"],
+                                   id="",
+                                   purchase_date="",
+                                   car_make="",
+                                   car_model="",
+                                   car_year=0,
+                                   sentiment="")
             if "id" in dealer_review:
                 review_obj.id = dealer_review["id"]
             if "purchase_date" in dealer_review:
                 review_obj.purchase_date = dealer_review["purchase_date"]
-            if "make" in dealer_review:
-                review_obj.make = dealer_review["make"]
+            if "car_make" in dealer_review:
+                review_obj.car_make = dealer_review["car_make"]
             if "car_model" in dealer_review:
                 review_obj.car_model = dealer_review["car_model"]
             if "car_year" in dealer_review:
